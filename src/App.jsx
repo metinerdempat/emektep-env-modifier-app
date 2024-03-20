@@ -88,7 +88,13 @@ const App = () => {
                     }
                     keyValuePairs.push({ id: nanoid(), key, value });
                   });
+                  const envLength = env.length;
+                  const keyValuePairsLength = keyValuePairs.length;
+
                   setEnv(keyValuePairs);
+                  if (keyValuePairsLength - envLength > 0) {
+                    toast.success(`${keyValuePairsLength - envLength} new env added successfully`);
+                  }
                 }
                 setMode(MODE_INPUT);
               }}
