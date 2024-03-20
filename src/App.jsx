@@ -24,13 +24,6 @@ const App = () => {
       setBulkEnv('');
     }
     setEnv((previousEnv) => previousEnv.filter((item) => item.id !== id));
-    setBulkEnv((previousBulkEnv) => {
-      const splittedFromBreakLines = previousBulkEnv.split('\n');
-      return splittedFromBreakLines.filter((line) => {
-        const [key] = line.split('=');
-        return key !== envItem.key;
-      });
-    });
     toast.success('Env removed successfully');
   };
 
