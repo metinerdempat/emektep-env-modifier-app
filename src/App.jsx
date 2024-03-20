@@ -113,28 +113,30 @@ const App = () => {
                   <div key={index} className="flex items-center gap-4">
                     <input
                       className="w-full py-2 px-3 flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
-                      defaultValue={envItem.key}
+                      value={envItem.key}
                       onChange={(e) => {
-                        const copyOfState = [...env];
-                        copyOfState.find((item) => {
-                          if (item.id === envItem.id) {
-                            item.key = e.target.value;
-                          }
+                        setEnv((previousEnv) => {
+                          return previousEnv.map((p) => {
+                            if (p.id === envItem.id) {
+                              return { ...p, key: e.target.value };
+                            }
+                            return p;
+                          });
                         });
-                        setEnv(copyOfState);
                       }}
                     />
                     <input
                       className="w-full py-2 px-3 flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
-                      defaultValue={envItem.value}
+                      value={envItem.value}
                       onChange={(e) => {
-                        const copyOfState = [...env];
-                        copyOfState.find((item) => {
-                          if (item.id === envItem.id) {
-                            item.value = e.target.value;
-                          }
+                        setEnv((previousEnv) => {
+                          return previousEnv.map((p) => {
+                            if (p.id === envItem.id) {
+                              return { ...p, value: e.target.value };
+                            }
+                            return p;
+                          });
                         });
-                        setEnv(copyOfState);
                       }}
                     />
                     <button
