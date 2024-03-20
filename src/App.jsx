@@ -112,7 +112,7 @@ const App = () => {
                 {env.map((envItem, index) => (
                   <div key={index} className="flex items-center gap-4">
                     <input
-                      className="w-full py-2 px-3 bg-white flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
+                      className="w-full py-2 px-3 flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
                       defaultValue={envItem.key}
                       onChange={(e) => {
                         const copyOfState = [...env];
@@ -125,7 +125,7 @@ const App = () => {
                       }}
                     />
                     <input
-                      className="w-full py-2 px-3 bg-white flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
+                      className="w-full py-2 px-3 flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
                       defaultValue={envItem.value}
                       onChange={(e) => {
                         const copyOfState = [...env];
@@ -138,7 +138,7 @@ const App = () => {
                       }}
                     />
                     <button
-                      className="w-10 rounded-sm h-10 bg-white bg-gray-700 grid place-items-center"
+                      className="w-10 rounded-sm h-10 bg-gray-700 grid place-items-center"
                       onClick={() => removeEnv(envItem.id)}
                     >
                       <IoIosRemoveCircle fill="#fff" fontSize="20px" />
@@ -147,7 +147,7 @@ const App = () => {
                 ))}
                 <div className="flex items-center gap-4">
                   <input
-                    className="w-full py-2 px-3 bg-white flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
+                    className="w-full py-2 px-3 flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
                     placeholder="Key"
                     value={envItem.key}
                     onChange={(e) => {
@@ -158,7 +158,7 @@ const App = () => {
                     }}
                   />
                   <input
-                    className="w-full py-2 px-3 bg-white flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
+                    className="w-full py-2 px-3 flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
                     placeholder="Value"
                     value={envItem.value}
                     onChange={(e) => {
@@ -169,7 +169,7 @@ const App = () => {
                     }}
                   />
                   <button
-                    className="w-10 rounded-sm h-10 bg-white bg-gray-700 grid place-items-center"
+                    className="w-10 rounded-sm h-10 bg-gray-700 grid place-items-center"
                     onClick={addEnv}
                   >
                     <AiFillPlusCircle fill="#fff" fontSize="20px" />
