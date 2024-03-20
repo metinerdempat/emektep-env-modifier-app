@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useRef } from 'react';
 import { Header } from './components';
 import { nanoid } from 'nanoid';
 import { toast } from 'sonner';
@@ -10,25 +10,27 @@ const MODE_BULK = 'BULK';
 const MODE_INPUT = 'INPUT';
 
 const App = () => {
-  const [env, setEnv] = useState([
-    {
-      id: nanoid(),
-      key: 'API_URL',
-      value: 'http://localhost:3000/api',
-    },
-  ]);
+  const [env, setEnv] = useState([]);
   const [mode, setMode] = useState(MODE_INPUT);
   const [envItem, setEnvItem] = useState({
     key: '',
     value: '',
   });
   const [bulkEnv, setBulkEnv] = useState('');
+  const keyInputRef = useRef(null);
 
   const removeEnv = (id) => {
-    if (env.length === 1) {
-      return;
+    if (env.length - 1 === 0) {
+      setBulkEnv('');
     }
     setEnv((previousEnv) => previousEnv.filter((item) => item.id !== id));
+    setBulkEnv((previousBulkEnv) => {
+      const splittedFromBreakLines = previousBulkEnv.split('\n');
+      return splittedFromBreakLines.filter((line) => {
+        const [key] = line.split('=');
+        return key !== envItem.key;
+      });
+    });
     toast.success('Env removed successfully');
   };
 
@@ -52,14 +54,9 @@ const App = () => {
       key: '',
       value: '',
     });
+    keyInputRef?.current?.focus();
     toast.success('Env added successfully');
   };
-
-  useEffect(() => {
-    if (env.length > 0) {
-      setBulkEnv(env.map((item) => `${item.key}=${item.value}`).join('\n'));
-    }
-  }, [env]);
 
   return (
     <>
@@ -74,7 +71,7 @@ const App = () => {
                 'bg-gray-700': mode === MODE_BULK,
               })}
               onClick={() => {
-                if (mode === MODE_BULK) {
+                if (mode === MODE_BULK && bulkEnv.length) {
                   const splittedFromBreakLines = bulkEnv.split('\n');
                   const keyValuePairs = [];
                   splittedFromBreakLines.forEach((line) => {
@@ -106,7 +103,12 @@ const App = () => {
                 'bg-orange-600': mode === MODE_BULK,
                 'bg-gray-700': mode === MODE_INPUT,
               })}
-              onClick={() => setMode(MODE_BULK)}
+              onClick={() => {
+                if (env.length > 0) {
+                  setBulkEnv(env.map((item) => `${item.key}=${item.value}`).join('\n'));
+                }
+                setMode(MODE_BULK);
+              }}
             >
               Bulk Mode
             </button>
@@ -146,7 +148,7 @@ const App = () => {
                       }}
                     />
                     <button
-                      className="w-10 rounded-sm h-10 bg-gray-700 grid place-items-center"
+                      className="w-10 rounded-sm h-10 bg-gray-700 grid place-items-center focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-700"
                       onClick={() => removeEnv(envItem.id)}
                     >
                       <IoIosRemoveCircle fill="#fff" fontSize="20px" />
@@ -155,6 +157,7 @@ const App = () => {
                 ))}
                 <div className="flex items-center gap-4">
                   <input
+                    ref={keyInputRef}
                     className="w-full py-2 px-3 flex-1 bg-gray-700 text-white rounded-sm focus:outline-none border-2 border-transparent focus:border-orange-500"
                     placeholder="Key"
                     value={envItem.key}
@@ -175,9 +178,12 @@ const App = () => {
                         value: e.target.value,
                       }));
                     }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') addEnv();
+                    }}
                   />
                   <button
-                    className="w-10 rounded-sm h-10 bg-gray-700 grid place-items-center"
+                    className="w-10 rounded-sm h-10 bg-gray-700 grid place-items-center focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-700"
                     onClick={addEnv}
                   >
                     <AiFillPlusCircle fill="#fff" fontSize="20px" />
